@@ -2,8 +2,7 @@
 
 ### How to Use
 
-**direnv が導入してある前提**  
-`.envrc.sample`を`.envrc`にリネームし各項目に値を入れる
+`.env.sample`を`.env`にリネームし各項目に値を入れる
 
 ```
 export AZURE_CLIENT_ID=

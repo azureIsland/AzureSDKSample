@@ -16,6 +16,8 @@ const vNetAddress = ["10.50.0.0/16"];
 const subNetAddress = "10.50.0.0/24";
 
 let network_client: NetworkManagementClient;
+
+// NSGの作成
 const createNetWorkSecurityGroup = async () => {
   const securityGroups = network_client.networkSecurityGroups.listAll();
   for await (const item of securityGroups) {

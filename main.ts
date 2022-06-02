@@ -15,8 +15,43 @@ const subnetName = "subnet_name";
 const vNetAddress = ["10.50.0.0/16"];
 const subNetAddress = "10.50.0.0/24";
 
-// VNet, Subnet(1つ)作成
 let network_client: NetworkManagementClient;
+const createNetWorkSecurityGroup = async () => {
+  const securityGroups = network_client.networkSecurityGroups.listAll();
+  for await (const item of securityGroups) {
+    console.log("=====");
+    console.log(item);
+  }
+
+  const newSecurityGroup =
+    await network_client.networkSecurityGroups.beginCreateOrUpdateAndWait(
+      resourceGroup,
+      "test_06221815",
+      {
+        location: location,
+        securityRules: [],
+        defaultSecurityRules: [
+          {
+            name: "DenyVnetInBound",
+            protocol: "*",
+            sourcePortRange: "*",
+            destinationPortRange: "*",
+            sourceAddressPrefix: "VirtualNetwork",
+            sourceAddressPrefixes: [],
+            destinationAddressPrefix: "VirtualNetwork",
+            destinationAddressPrefixes: [],
+            sourcePortRanges: [],
+            destinationPortRanges: [],
+            access: "Deny",
+            priority: 4096,
+          },
+        ],
+      }
+    );
+  console.log(newSecurityGroup);
+};
+
+// VNet, Subnet(1つ)作成
 async function createVirtualNetwork() {
   // VNet
   const parameter: VirtualNetwork = {
@@ -55,6 +90,7 @@ async function main() {
     new DefaultAzureCredential(),
     subscriptionId!
   );
-  createVirtualNetwork();
+  // createVirtualNetwork();
+  createNetWorkSecurityGroup();
 }
 main();

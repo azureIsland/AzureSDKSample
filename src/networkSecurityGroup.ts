@@ -1,16 +1,19 @@
 import { NetworkManagementClient } from "@azure/arm-network";
 
+// NSGの作成
 export const createNetWorkSecurityGroup = async (
-  network_client: NetworkManagementClient
+  networkClient: NetworkManagementClient,
+  resourceGroup: string,
+  location: string
 ) => {
-  const securityGroups = network_client.networkSecurityGroups.listAll();
+  const securityGroups = networkClient.networkSecurityGroups.listAll();
   for await (const item of securityGroups) {
     console.log("=====");
     console.log(item);
   }
 
   const newSecurityGroup =
-    await network_client.networkSecurityGroups.beginCreateOrUpdateAndWait(
+    await networkClient.networkSecurityGroups.beginCreateOrUpdateAndWait(
       resourceGroup,
       "test_06221815",
       {
@@ -35,4 +38,5 @@ export const createNetWorkSecurityGroup = async (
       }
     );
   console.log(newSecurityGroup);
+  return newSecurityGroup;
 };
